@@ -1,0 +1,15 @@
+{
+    "name": "ssx/php-serve",
+    "description": "A small helper to start and stop the inbuilt PHP server, useful for API testing with PHPUnit.",
+    "authors": [
+        {
+            "name": "Scott Wilcox",
+            "email": "scott@dor.ky"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SSX\\Utility\\": "src"
+        }
+    }
+}
