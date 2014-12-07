@@ -10,8 +10,8 @@ namespace SSX\Utility;
  *
  * */
 
-class Server {
-    public $pid;
+class Serve {
+    public $pid             = 0;
     public $address         = "0.0.0.0";
     public $port            = 8888;
     public $document_root   = ".";
@@ -33,7 +33,7 @@ class Server {
 
     public function start() {
         // If we're already running, return the PID back
-        if ($this->pid)
+        if ($this->pid != 0)
             return $this->pid;
 
         $command = sprintf('php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
@@ -48,11 +48,11 @@ class Server {
         exec($command, $output);
 
         // Store the returned PID
-        $this->pid = (int) $output[0];
+        $this->pid = (int)$output[0];
 
         // Give the server time to boot, important during testing otherwise
         // your first few tests will fail to run
-        sleep(1);
+        sleep(2);
 
         // Return the PID
         return $this->pid;
@@ -60,6 +60,6 @@ class Server {
 
     public function stop()
     {
-        exec('kill ' . (int) $pid);
+        exec('kill ' . (int) $this->pid);
     }
 }
