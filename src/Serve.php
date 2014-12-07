@@ -15,6 +15,7 @@ class Serve {
     public $address         = "0.0.0.0";
     public $port            = 8888;
     public $document_root   = ".";
+    public $router          = "";
 
     public function __construct($aryParams = array())
     {
@@ -36,10 +37,16 @@ class Serve {
         if ($this->pid != 0)
             return $this->pid;
 
-        $command = sprintf('php -S %s:%d -t %s >/dev/null 2>&1 & echo $!',
+        $command = sprintf('php -S %s:%d -t %s ',
             $this->address,
             $this->port,
             $this->document_root);
+
+        if ($this->router)
+                $command .= " ".$this->router;
+
+        // Redirect logging and force the PID to be returned
+        $command .= " >/dev/null 2>&1 & echo $!";
 
         // We'll put the output into this array
         $output = array();
