@@ -30,6 +30,9 @@ class Serve {
         if (isset($aryParams["document_root"]))
             $this->document_root = $aryParams["document_root"];
 
+        if (isset($aryParams["router"]))
+            $this->router = $aryParams["router"];
+
     }
 
     public function start() {
@@ -37,13 +40,11 @@ class Serve {
         if ($this->pid != 0)
             return $this->pid;
 
-        $command = sprintf('php -S %s:%d -t %s ',
+        $command = sprintf('php -S %s:%d -t %s %s',
             $this->address,
             $this->port,
-            $this->document_root);
-
-        if ($this->router)
-                $command .= " ".$this->router;
+            $this->document_root,
+            $this->router);
 
         // Redirect logging and force the PID to be returned
         $command .= " >/dev/null 2>&1 & echo $!";
@@ -67,6 +68,6 @@ class Serve {
 
     public function stop()
     {
-        exec('kill ' . (int) $this->pid);
+        exec('kill -9 ' . (int)$this->pid);
     }
 }
